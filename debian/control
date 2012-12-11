@@ -24,3 +24,9 @@ Description: Icelandic dictionary for hunspell
  Icelandic Wiktionary with morphological information. The wordlist was
  released into the public domain in the early nineties by Orðabók Háskóla
  Íslands & Reiknistofnun Háskóla Íslands.
+
+Package: mythes-is
+Architecture: all
+Provides: mythes-thesaurus, mythes-thesaurus-is
+Depends: ${misc:Depends}, libreoffice-core
+Description: Icelandic thesaurus for LibreOffice

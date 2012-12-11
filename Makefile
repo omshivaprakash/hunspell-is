@@ -2,10 +2,10 @@ TH_GEN_IDX=/usr/share/mythes/th_gen_idx.pl
 
 .PHONY: all clean test packages debian-package
 
-all: dicts/is.dic dicts/is.aff dicts/th_is.dat dicts/th_is.idx
+all: dicts/is.dic dicts/is.aff th_is.dat th_is.idx
 
 clean:
-	rm -f dicts/is.aff dicts/is.dic dicts/th_is.dat dicts/th_is.idx dicts/is.oxt dicts/is.xpi
+	rm -f dicts/is.aff dicts/is.dic th_is.dat th_is.idx dicts/is.oxt dicts/is.xpi
 	rm -f hunspell-is_*.deb hunspell-is_*.dsc hunspell-is_*.tar.gz hunspell-is_*.changes
 	rm -f wiktionary.dic wiktionary.aff wiktionary.extracted wordlist.diff
 	rm -f huntest.aff huntest.dic
@@ -20,7 +20,7 @@ test:
 packages: dicts/is.oxt dicts/is.xpi
 
 # LibreOffice extension
-dicts/is.oxt: %.oxt: %.aff %.dic dicts/th_is.dat dicts/th_is.idx \
+dicts/is.oxt: %.oxt: %.aff %.dic th_is.dat th_is.idx \
 		packages/libreoffice/META-INF/manifest.xml \
 		packages/libreoffice/description.xml \
 		packages/libreoffice/dictionaries.xcu \
@@ -29,7 +29,7 @@ dicts/is.oxt: %.oxt: %.aff %.dic dicts/th_is.dat dicts/th_is.idx \
 	cp -rf packages/libreoffice libreoffice-tmp
 	cp debian/copyright libreoffice-tmp/license.txt
 	cd libreoffice-tmp && sed -i 's/TODAYPLACEHOLDER/'`date +%Y.%m.%d`'/g' description.xml && zip -r ../$@ *
-	zip $@ dicts/is.dic dicts/is.aff dicts/th_is.dat dicts/th_is.idx
+	zip $@ dicts/is.dic dicts/is.aff th_is.dat th_is.idx
 
 # Mozilla extension
 dicts/is.xpi: %.xpi: %.aff %.dic \
@@ -45,7 +45,7 @@ dicts/%.aff : makedict.sh %wiktionary-latest-pages-articles.xml.texts %wiktionar
 dicts/%.dic: makedict.sh %wiktionary-latest-pages-articles.xml.texts %wiktionary-latest-pages-articles.xml
 	./$< is
 
-dicts/th_%.dat: makethes.awk %wiktionary-latest-pages-articles.xml
+th_%.dat: makethes.awk %wiktionary-latest-pages-articles.xml
 	echo "UTF-8" > $@
 	LC_ALL=is_IS.utf8 gawk -F " " -f $< <iswiktionary-latest-pages-articles.xml >> $@
 
